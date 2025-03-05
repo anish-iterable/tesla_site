@@ -4,6 +4,34 @@
     <meta name="viewport" content="width=device-width" , initial-scale="1.0" />
     <title>Tesla - Model S</title>
     <link rel="stylesheet" href="style.css" />
+
+    <!-- Include Iterable Web SDK -->
+    <script src="https://js.iterable.com/itbl.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize Iterable
+        Iterable.initialize("8c641f7927bc4c8da562f28d04563bc5", {
+          autoPushSubscribe: true, // Automatically ask for push notification permission
+          verbose: true, // Enable verbose logging for debugging
+        });
+
+        // Example: Identify user (replace with actual email or userId)
+        Iterable.setUserId("Taylan.Somani@gmail.com");
+
+        // Example: Track an event when user clicks "Reserve Now"
+        function trackReserveNow() {
+          Iterable.track("Reserve Now Clicked", {
+            model: "Model S",
+            page: window.location.pathname,
+          });
+        }
+
+        // Attach event listener to the "Reserve Now" button
+        document.querySelector(".btn").addEventListener("click", trackReserveNow);
+      });
+    </script>
+    
   </head>
   <body class="models">
     <div class="header" id="header">
