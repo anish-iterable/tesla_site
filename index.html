@@ -1,78 +1,44 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tesla - Model S</title>
-    <link rel="stylesheet" href="style.css" />
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var interval = setInterval(function () {
+      if (window.Iterable && typeof Iterable.initialize === "function") {
+        clearInterval(interval);
 
-    <!-- Include Iterable Web SDK -->
-<script src="https://unpkg.com/@iterable/web-sdk/index.js"></script>
+        console.log("✅ Iterable SDK Loaded Successfully");
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Check if Iterable SDK is loaded before executing
-        var interval = setInterval(function () {
-          if (window.Iterable) {
-            clearInterval(interval);
+        // Use your actual API key (ensure it has web permissions)
+        const API_KEY = "8c641f7927bc4c8da562f28d04563bc5";
 
-            // Securely fetch API key from environment (if applicable)
-            const API_KEY = "8c641f7927bc4c8da562f28d04563bc5"; // Replace with secure method if possible
+        // Initialize Iterable WITHOUT JWT
+        Iterable.initialize(API_KEY, {
+          autoPushSubscribe: true, // Enable push notifications
+          verbose: true, // Enable logging
+        });
 
-            // Initialize Iterable
-            Iterable.initialize(API_KEY, {
-              autoPushSubscribe: true, // Ask for push notification permission
-              verbose: true, // Enable logging
-            });
+        // Identify user
+        Iterable.setUserId("Taylan.Somani@gmail.com");
+        console.log("✅ User Identified:", Iterable.getUserId());
 
-            // Identify user (replace with dynamic user data if available)
-            Iterable.setUserId("Taylan.Somani@gmail.com");
+        // Track "Reserve Now" button click
+        function trackReserveNow() {
+          Iterable.track("Reserve Now Clicked", {
+            model: "Model S",
+            page: window.location.pathname,
+          }).then(() => {
+            console.log("✅ Event tracked successfully");
+          }).catch(error => {
+            console.error("❌ Error tracking event:", error);
+          });
+        }
 
-            // Track "Reserve Now" button click
-            function trackReserveNow() {
-              Iterable.track("Reserve Now Clicked", {
-                model: "Model S",
-                page: window.location.pathname,
-              });
-            }
-
-            // Attach event listener to the "Reserve Now" button
-            document.querySelector(".btn").addEventListener("click", trackReserveNow);
-          }
-        }, 100); // Check every 100ms
-      });
-    </script>
-  </head>
-  <body class="models">
-    <div class="header" id="header">
-      <nav>
-        <img src="images/logo.png" class="logo" />
-        <ul>
-          <li><a href="index.html">Model S</a></li>
-          <li><a href="model3.html">Model 3</a></li>
-          <li><a href="modelx.html">Model X</a></li>
-          <li><a href="modely.html">Model Y</a></li>
-        </ul>
-        <a href="#" class="btn">Reserve Now</a>
-      </nav>
-
-      <div class="info">
-        <div>
-          <h2>1.9 s</h2>
-          <p>60 mph</p>
-        </div>
-        <div>
-          <h2>200 mph</h2>
-          <p>Top Speed</p>
-        </div>
-        <div>
-          <h2>390 mi</h2>
-          <p>Max Range</p>
-        </div>
-        <div class="line"></div>
-        <div>
-          <h2 id="model">Model S</h2>
-        </div>
-      </div>
-    </div>
-  </body>
-</html>
+        // Attach event listener
+        const btn = document.querySelector(".btn");
+        if (btn) {
+          btn.addEventListener("click", trackReserveNow);
+        } else {
+          console.error("❌ Button not found");
+        }
+      }
+    }, 100);
+  });
+</script>
