@@ -1,51 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width" , initial-scale="1.0" />
     <title>Tesla - Model S</title>
     <link rel="stylesheet" href="style.css" />
-
-    <!-- Include Iterable Web SDK -->
-<script src="https://unpkg.com/@iterable/web-sdk/index.js"></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Check if Iterable SDK is loaded before executing
-        var interval = setInterval(function () {
-          if (window.Iterable) {
-            clearInterval(interval);
-
-            // Securely fetch API key from environment (if applicable)
-            const API_KEY = "8c641f7927bc4c8da562f28d04563bc5"; // Replace with secure method if possible
-
-
-
-             // Initialize Iterable
-            Iterable.initializeWithConfig({
-              authToken: API_KEY,
-              configOptions: {
-                isEuIterableService: false, 
-                dangerouslyAllowJsPopups: false
-              }
-            });
-
-            // Identify user (replace with dynamic user data if available)
-            Iterable.setUserId("Taylan.Somani@gmail.com");
-
-            // Track "Reserve Now" button click
-            function trackReserveNow() {
-              Iterable.track("Reserve Now Clicked", {
-                model: "Model S",
-                page: window.location.pathname,
-              });
-            }
-
-            // Attach event listener to the "Reserve Now" button
-            document.querySelector(".btn").addEventListener("click", trackReserveNow);
-          }
-        }, 100); // Check every 100ms
-      });
-    </script>
   </head>
   <body class="models">
     <div class="header" id="header">
@@ -81,4 +39,3 @@
     </div>
   </body>
 </html>
-
