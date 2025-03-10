@@ -5,9 +5,42 @@
     <title>Tesla - Model S</title>
     <link rel="stylesheet" href="style.css" />
 
-    <!-- Load Iterable Web SDK -->
-    <script defer type="text/javascript" src="https://unpkg.com/@iterable/web-sdk@1.1.3/index.js"></script>
+    <!-- Include Iterable Web SDK -->
+<script src="https://unpkg.com/@iterable/web-sdk/index.js"></script>
 
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Check if Iterable SDK is loaded before executing
+        var interval = setInterval(function () {
+          if (window.Iterable) {
+            clearInterval(interval);
+
+            // Securely fetch API key from environment (if applicable)
+            const API_KEY = "8c641f7927bc4c8da562f28d04563bc5"; // Replace with secure method if possible
+
+            // Initialize Iterable
+            Iterable.initialize(API_KEY, {
+              autoPushSubscribe: true, // Ask for push notification permission
+              verbose: true, // Enable logging
+            });
+
+            // Identify user (replace with dynamic user data if available)
+            Iterable.setUserId("Taylan.Somani@gmail.com");
+
+            // Track "Reserve Now" button click
+            function trackReserveNow() {
+              Iterable.track("Reserve Now Clicked", {
+                model: "Model S",
+                page: window.location.pathname,
+              });
+            }
+
+            // Attach event listener to the "Reserve Now" button
+            document.querySelector(".btn").addEventListener("click", trackReserveNow);
+          }
+        }, 100); // Check every 100ms
+      });
+    </script>
   </head>
   <body class="models">
     <div class="header" id="header">
@@ -41,53 +74,6 @@
         </div>
       </div>
     </div>
-
-    <!-- JavaScript to initialize Iterable -->
-    <script>
-      window.addEventListener("load", function () {
-        console.log("✅ Page loaded");
-
-        // Wait for SDK to be available
-        var interval = setInterval(function () {
-          if (window.Iterable && typeof Iterable.initialize === "function") {
-            clearInterval(interval);
-            console.log("✅ Iterable SDK Loaded Successfully");
-
-            // Securely fetch API key (replace with actual API key)
-            const API_KEY = "8c641f7927bc4c8da562f28d04563bc5";
-
-            // Initialize Iterable WITHOUT JWT
-            Iterable.initialize(API_KEY, {
-              autoPushSubscribe: true, // Enable push notifications
-              verbose: true, // Enable logging
-            });
-
-            // Identify user
-            Iterable.setUserId("Taylan.Somani@gmail.com");
-            console.log("✅ User Identified:", Iterable.getUserId());
-
-            // Track "Reserve Now" button click
-            function trackReserveNow() {
-              Iterable.track("Reserve Now Clicked", {
-                model: "Model S",
-                page: window.location.pathname,
-              }).then(() => {
-                console.log("✅ Event tracked successfully");
-              }).catch(error => {
-                console.error("❌ Error tracking event:", error);
-              });
-            }
-
-            // Attach event listener
-            const btn = document.querySelector(".btn");
-            if (btn) {
-              btn.addEventListener("click", trackReserveNow);
-            } else {
-              console.error("❌ Button not found");
-            }
-          }
-        }, 100);
-      });
-    </script>
   </body>
 </html>
+
