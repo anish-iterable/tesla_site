@@ -4,19 +4,50 @@
     <meta name="viewport" content="width=device-width" , initial-scale="1.0" />
     <title>Tesla - Model S</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- Add Iterable Web SDK -->
-    <script src="https://js.iterable.com/javascript-sdk/4.0.0/iterable.min.js"></script>
+    <!-- Add Iterable Web SDK with correct URL -->
+    <script src="https://unpkg.com/@iterable/web-sdk/index.js"></script>
     <script>
+      // Enable debug mode to see detailed logs
+      Iterable.setDebugMode(true);
+      console.log('Debug mode enabled for Iterable SDK');
+      
       // Initialize Iterable with your API key
       Iterable.initialize('c2d7324bd5a84684a7ebb14a985a4aa1');
+      console.log('Iterable SDK initialized');
+      
+      // Test function for manual verification
+      function testIterableEvent() {
+        console.log('Testing Iterable event...');
+        Iterable.track({
+          eventName: 'testEvent',
+          dataFields: {
+            testProperty: 'testValue',
+            timestamp: new Date().toISOString()
+          }
+        }).then(function(response) {
+          console.log('Test event tracked successfully:', response);
+        }).catch(function(error) {
+          console.error('Error tracking test event:', error);
+        });
+      }
       
       // Set up the user when page loads
       document.addEventListener('DOMContentLoaded', function() {
         // Identify the user with email
-        Iterable.setEmail('Claude@iterable.com');
+        console.log('Setting user email...');
+        Iterable.setEmail('Claude@iterable.com').then(function(response) {
+          console.log('User identified successfully:', response);
+        }).catch(function(error) {
+          console.error('Error identifying user:', error);
+        });
         
         // Track page view event
-        Iterable.trackPageView();
+        console.log('Tracking page view...');
+        Iterable.trackPageView().then(function(response) {
+          console.log('Page view tracked successfully:', response);
+        }).catch(function(error) {
+          console.error('Error tracking page view:', error);
+        });
         
         // Add event listener to the Reserve Now button
         const reserveButton = document.querySelector('.btn');
@@ -24,20 +55,71 @@
           reserveButton.addEventListener('click', function(e) {
             e.preventDefault();
             
+            console.log('Reserve button clicked, tracking event...');
             // Track reserve button click
             Iterable.track({
               eventName: 'reserveButtonClicked',
               dataFields: {
                 model: document.getElementById('model').textContent,
-                location: window.location.pathname
+                location: window.location.pathname,
+                timestamp: new Date().toISOString()
               }
+            }).then(function(response) {
+              console.log('Reserve button click tracked successfully:', response);
+            }).catch(function(error) {
+              console.error('Error tracking reserve button click:', error);
             });
             
             // You can add redirection to reservation page here
             // window.location.href = "reservation.html";
           });
         }
+        
+        // Add testing controls
+        addTestingControls();
       });
+      
+      // Function to add testing controls
+      function addTestingControls() {
+        const testingDiv = document.createElement('div');
+        testingDiv.style.position = 'fixed';
+        testingDiv.style.bottom = '10px';
+        testingDiv.style.right = '10px';
+        testingDiv.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        testingDiv.style.color = 'white';
+        testingDiv.style.padding = '10px';
+        testingDiv.style.borderRadius = '5px';
+        testingDiv.style.zIndex = '9999';
+        
+        const heading = document.createElement('h4');
+        heading.textContent = 'Iterable Testing';
+        heading.style.margin = '0 0 10px 0';
+        
+        const testButton = document.createElement('button');
+        testButton.textContent = 'Test Custom Event';
+        testButton.style.display = 'block';
+        testButton.style.margin = '5px 0';
+        testButton.style.padding = '5px 10px';
+        testButton.addEventListener('click', testIterableEvent);
+        
+        const checkUserButton = document.createElement('button');
+        checkUserButton.textContent = 'Check Current User';
+        checkUserButton.style.display = 'block';
+        checkUserButton.style.margin = '5px 0';
+        checkUserButton.style.padding = '5px 10px';
+        checkUserButton.addEventListener('click', function() {
+          Iterable.getEmail().then(function(email) {
+            console.log('Current user email:', email);
+            alert('Current user email: ' + (email || 'Not set'));
+          });
+        });
+        
+        testingDiv.appendChild(heading);
+        testingDiv.appendChild(testButton);
+        testingDiv.appendChild(checkUserButton);
+        
+        document.body.appendChild(testingDiv);
+      }
     </script>
   </head>
   <body class="models">
