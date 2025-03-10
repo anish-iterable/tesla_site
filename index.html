@@ -7,23 +7,14 @@
     <link rel="stylesheet" href="style.css" />
 
     <script>
-        async function loadIterableSDK() {
-            return new Promise((resolve, reject) => {
-                const script = document.createElement("script");
-                script.src = "https://unpkg.com/@iterable/web-sdk/index.js";
-                script.async = true;
-                script.onload = resolve;
-                script.onerror = reject;
-                document.head.appendChild(script);
-            });
-        }
-
         async function initializeIterable() {
             try {
-                await loadIterableSDK(); // Load SDK before using it
+                // Import Iterable SDK dynamically
+                const IterableModule = await import("https://unpkg.com/@iterable/web-sdk/index.js");
+                const Iterable = IterableModule.default || IterableModule; // Handle different module exports
 
-                if (!window.Iterable) {
-                    console.error("Iterable SDK still not available after loading.");
+                if (!Iterable) {
+                    console.error("Iterable SDK is still not available after import.");
                     return;
                 }
 
