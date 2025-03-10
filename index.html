@@ -4,6 +4,41 @@
     <meta name="viewport" content="width=device-width" , initial-scale="1.0" />
     <title>Tesla - Model S</title>
     <link rel="stylesheet" href="style.css" />
+    <!-- Add Iterable Web SDK -->
+    <script src="https://js.iterable.com/javascript-sdk/4.0.0/iterable.min.js"></script>
+    <script>
+      // Initialize Iterable with your API key
+      Iterable.initialize('c2d7324bd5a84684a7ebb14a985a4aa1');
+      
+      // Set up the user when page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        // Identify the user with email
+        Iterable.setEmail('Claude@iterable.com');
+        
+        // Track page view event
+        Iterable.trackPageView();
+        
+        // Add event listener to the Reserve Now button
+        const reserveButton = document.querySelector('.btn');
+        if (reserveButton) {
+          reserveButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Track reserve button click
+            Iterable.track({
+              eventName: 'reserveButtonClicked',
+              dataFields: {
+                model: document.getElementById('model').textContent,
+                location: window.location.pathname
+              }
+            });
+            
+            // You can add redirection to reservation page here
+            // window.location.href = "reservation.html";
+          });
+        }
+      });
+    </script>
   </head>
   <body class="models">
     <div class="header" id="header">
@@ -17,7 +52,6 @@
         </ul>
         <a href="#" class="btn">Reserve Now</a>
       </nav>
-
       <div class="info">
         <div>
           <h2>1.9 s</h2>
