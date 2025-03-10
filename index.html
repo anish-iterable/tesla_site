@@ -11,11 +11,23 @@
             try {
                 // Import Iterable SDK dynamically
                 const IterableModule = await import("https://unpkg.com/@iterable/web-sdk/index.js");
-                const Iterable = IterableModule.default || IterableModule; // Handle different module exports
+                const Iterable = IterableModule.default || IterableModule; // Handle module exports
 
                 if (!Iterable) {
                     console.error("Iterable SDK is still not available after import.");
                     return;
+                }
+
+                // Check if email is already stored in Local Storage
+                let storedEmail = localStorage.getItem("iterable_email");
+
+                if (!storedEmail) {
+                    // If no email is set, define a new one (this will be used for tracking)
+                    storedEmail = "Claude@iterable.com";
+                    localStorage.setItem("iterable_email", storedEmail);
+                    console.log(`📩 New email set in local storage: ${storedEmail}`);
+                } else {
+                    console.log(`🔄 Retrieved stored email: ${storedEmail}`);
                 }
 
                 // Initialize Iterable SDK
@@ -24,10 +36,10 @@
                     disableSecurity: true // No JWT required
                 });
 
-                // Identify and add user
-                await iterable.setEmail('Claude@iterable.com');
+                // Set email in Iterable (required for making API calls)
+                await iterable.setEmail(storedEmail);
+                console.log("✅ Iterable Web SDK initialized with email:", storedEmail);
 
-                console.log("✅ Iterable Web SDK initialized successfully!");
             } catch (error) {
                 console.error("❌ Error loading Iterable SDK:", error);
             }
