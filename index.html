@@ -18,10 +18,15 @@
             // Securely fetch API key from environment (if applicable)
             const API_KEY = "8c641f7927bc4c8da562f28d04563bc5"; // Replace with secure method if possible
 
-            // Initialize Iterable
-            Iterable.initialize(API_KEY, {
-              autoPushSubscribe: true, // Ask for push notification permission
-              verbose: true, // Enable logging
+
+
+             // Initialize Iterable
+            Iterable.initializeWithConfig({
+              authToken: API_KEY,
+              configOptions: {
+                isEuIterableService: false, 
+                dangerouslyAllowJsPopups: false
+              }
             });
 
             // Identify user (replace with dynamic user data if available)
