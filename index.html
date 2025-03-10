@@ -7,22 +7,8 @@
     <link rel="stylesheet" href="style.css" />
 
     <!-- Include Iterable Web SDK -->
-    <script src="https://unpkg.com/@iterable/web-sdk/index.js"></script>
+    <script src="https://unpkg.com/@iterable/web-sdk/index.js" defer></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", async function () {
-            // Initialize Iterable SDK
-            const iterable = await Iterable.init({
-                apiKey: 'c2d7324bd5a84684a7ebb14a985a4aa1', // Your API Key
-                disableSecurity: true // Only needed if JWT is NOT required
-            });
-
-            // Identify and add user
-            await iterable.setEmail('Claude@iterable.com');
-
-            console.log("Iterable Web SDK initialized successfully!");
-        });
-    </script>
 </head>
 
 <body class="models">
@@ -56,6 +42,32 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            try {
+                // Wait for Iterable SDK to be available
+                if (!window.Iterable) {
+                    console.error("Iterable SDK not loaded yet.");
+                    return;
+                }
+
+                // Initialize Iterable SDK
+                const iterable = await Iterable.init({
+                    apiKey: 'c2d7324bd5a84684a7ebb14a985a4aa1', // Your API Key
+                    disableSecurity: true // Only needed if JWT is NOT required
+                });
+
+                // Identify and add user
+                await iterable.setEmail('Claude@iterable.com');
+
+                console.log("Iterable Web SDK initialized successfully!");
+            } catch (error) {
+                console.error("Error initializing Iterable SDK:", error);
+            }
+        });
+    </script>
+
 </body>
 
 </html>
