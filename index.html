@@ -43,49 +43,56 @@
     </div>
 
     <script>
-        window.addEventListener("load", function() {
+        window.addEventListener("load", function () {
             console.log('Checking Iterable SDK:', window['@iterable/web-sdk']);
-            
-            if (window['@iterable/web-sdk']) {
-                try {
-                    const { initialize, getInAppMessages } = window['@iterable/web-sdk'];
-                    
-                    if (initialize) {
-                        const { setEmail, logout } = initialize('c2d7324bd5a84684a7ebb14a985a4aa1');
-                        
-                        if (setEmail) {
-                            setEmail('user@example.com') // Replace dynamically
-                                .then(() => {
-                                    console.log('Email set successfully.');
-                                })
-                                .catch((error) => {
-                                    console.error('Error setting email:', error);
-                                });
-                        } else {
-                            console.error('Iterable SDK did not initialize correctly. setEmail is undefined.');
-                        }
 
-                        if (getInAppMessages) {
-                            const { request, pauseMessageStream, resumeMessageStream } = getInAppMessages(
-                                {
-                                    count: 20,
-                                    packageName: 'tesla-website',
-                                    handleLinks: 'open-all-same-tab',
-                                },
-                                true
-                            );
-                            request();
-                        } else {
-                            console.error('getInAppMessages is undefined.');
-                        }
-                    } else {
-                        console.error('initialize function is undefined in Iterable SDK.');
-                    }
-                } catch (error) {
-                    console.error('Error initializing Iterable SDK:', error);
+            if (!window['@iterable/web-sdk']) {
+                console.error('Iterable SDK is not available. Ensure the script loaded correctly.');
+                return;
+            }
+
+            try {
+                const { initialize, getInAppMessages } = window['@iterable/web-sdk'];
+
+                if (!initialize) {
+                    console.error('initialize function is missing in Iterable SDK.');
+                    return;
                 }
-            } else {
-                console.error('Iterable SDK is not available. Check if the script loaded correctly.');
+
+                const sdkInstance = initialize('c2d7324bd5a84684a7ebb14a985a4aa1');
+                console.log('Iterable SDK initialized:', sdkInstance);
+
+                if (!sdkInstance || typeof sdkInstance.setEmail !== 'function') {
+                    console.error('Iterable SDK did not initialize correctly. Expected functions are missing.');
+                    return;
+                }
+
+                const { setEmail, logout } = sdkInstance;
+
+                setEmail('user@example.com') // Replace dynamically
+                    .then(() => {
+                        console.log('Email set successfully.');
+                    })
+                    .catch((error) => {
+                        console.error('Error setting email:', error);
+                    });
+
+                if (getInAppMessages) {
+                    const { request, pauseMessageStream, resumeMessageStream } = getInAppMessages(
+                        {
+                            count: 20,
+                            packageName: 'tesla-website',
+                            handleLinks: 'open-all-same-tab',
+                        },
+                        true
+                    );
+                    request();
+                } else {
+                    console.error('getInAppMessages is undefined.');
+                }
+
+            } catch (error) {
+                console.error('Error initializing Iterable SDK:', error);
             }
         });
     </script>
