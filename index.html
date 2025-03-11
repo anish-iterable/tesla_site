@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tesla - Model S</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/@iterable/web-sdk/index.js"></script>
 </head>
 
 <body class="models">
@@ -39,6 +41,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+        (function () {
+            const { setEmail, logout } = window['@iterable/web-sdk'].initialize(
+                'c2d7324bd5a84684a7ebb14a985a4aa1'
+            );
+
+            const { request, pauseMessageStream, resumeMessageStream } = window['@iterable/web-sdk'].getInAppMessages(
+                {
+                    count: 20,
+                    packageName: 'tesla-website',
+                    handleLinks: 'open-all-same-tab',
+                },
+                true
+            );
+
+            setEmail('user@example.com') // Replace with the actual user email dynamically
+                .then(() => {
+                    request();
+                })
+                .catch(() => { });
+        })();
+    </script>
 </body>
 
 </html>
