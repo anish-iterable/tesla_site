@@ -1,34 +1,81 @@
-async function initializeIterable() {
-    try {
-        if (!window.Iterable) {
-            console.error("Iterable SDK not loaded.");
-            return;
-        }
+<!DOCTYPE html>
+<html lang="en">
 
-        // Check if email is already stored in Local Storage
-        let storedEmail = localStorage.getItem("iterable_email");
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla - Model S</title>
+    <link rel="stylesheet" href="style.css">
 
-        if (!storedEmail) {
-            storedEmail = "Claude@iterable.com"; // Replace with user email dynamically if needed
-            localStorage.setItem("iterable_email", storedEmail);
-            console.log(`📩 New email set in local storage: ${storedEmail}`);
-        } else {
-            console.log(`🔄 Retrieved stored email: ${storedEmail}`);
-        }
+    <!-- Load Iterable SDK -->
+    <script src="https://unpkg.com/@iterable/web-sdk/dist/iterable.min.js"></script>
 
-        // Initialize Iterable SDK
-        await Iterable.init({
-            apiKey: 'c2d7324bd5a84684a7ebb14a985a4aa1', // Your actual API key
-            disableSecurity: true 
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            try {
+                if (!window.Iterable) {
+                    console.error("Iterable SDK not loaded.");
+                    return;
+                }
+
+                let storedEmail = localStorage.getItem("iterable_email");
+
+                if (!storedEmail) {
+                    storedEmail = "test@example.com"; // Replace with actual email logic
+                    localStorage.setItem("iterable_email", storedEmail);
+                    console.log(`📩 Stored email: ${storedEmail}`);
+                } else {
+                    console.log(`🔄 Retrieved stored email: ${storedEmail}`);
+                }
+
+                // Initialize Iterable SDK
+                await Iterable.init({
+                    apiKey: 'c2d7324bd5a84684a7ebb14a985a4aa1',
+                    disableSecurity: true
+                });
+
+                // Set email in Iterable
+                await Iterable.setEmail(storedEmail);
+                console.log("✅ Iterable initialized successfully");
+
+            } catch (error) {
+                console.error("❌ Error initializing Iterable SDK:", error);
+            }
         });
+    </script>
+</head>
 
-        // Set email in Iterable
-        await Iterable.setEmail(storedEmail);
-        console.log("✅ Iterable Web SDK initialized with email:", storedEmail);
+<body class="models">
+    <div class="header" id="header">
+        <nav>
+            <img src="images/logo.png" class="logo">
+            <ul>
+                <li><a href="index.html">Model S</a></li>
+                <li><a href="model3.html">Model 3</a></li>
+                <li><a href="modelx.html">Model X</a></li>
+                <li><a href="modely.html">Model Y</a></li>
+            </ul>
+            <a href="#" class="btn">Reserve Now</a>
+        </nav>
+        <div class="info">
+            <div>
+                <h2>1.9 s</h2>
+                <p>0-60 mph</p>
+            </div>
+            <div>
+                <h2>200 mph</h2>
+                <p>Top Speed</p>
+            </div>
+            <div>
+                <h2>390 mi</h2>
+                <p>Max Range</p>
+            </div>
+            <div class="line"></div>
+            <div>
+                <h2 id="model">Model S</h2>
+            </div>
+        </div>
+    </div>
+</body>
 
-    } catch (error) {
-        console.error("❌ Error loading Iterable SDK:", error);
-    }
-}
-
-document.addEventListener("DOMContentLoaded", initializeIterable);
+</html>
