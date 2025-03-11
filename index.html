@@ -6,43 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tesla - Model S</title>
     <link rel="stylesheet" href="style.css">
-
-    <!-- Load Iterable SDK -->
-    <script src="https://unpkg.com/@iterable/web-sdk/dist/iterable.min.js"></script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", async function () {
-            try {
-                if (!window.Iterable) {
-                    console.error("Iterable SDK not loaded.");
-                    return;
-                }
-
-                let storedEmail = localStorage.getItem("iterable_email");
-
-                if (!storedEmail) {
-                    storedEmail = "test@example.com"; // Replace with actual email logic
-                    localStorage.setItem("iterable_email", storedEmail);
-                    console.log(`📩 Stored email: ${storedEmail}`);
-                } else {
-                    console.log(`🔄 Retrieved stored email: ${storedEmail}`);
-                }
-
-                // Initialize Iterable SDK
-                await Iterable.init({
-                    apiKey: 'c2d7324bd5a84684a7ebb14a985a4aa1',
-                    disableSecurity: true
-                });
-
-                // Set email in Iterable
-                await Iterable.setEmail(storedEmail);
-                console.log("✅ Iterable initialized successfully");
-
-            } catch (error) {
-                console.error("❌ Error initializing Iterable SDK:", error);
-            }
-        });
-    </script>
 </head>
 
 <body class="models">
