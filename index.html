@@ -43,26 +43,51 @@
     </div>
 
     <script>
-        (function () {
-            const { setEmail, logout } = window['@iterable/web-sdk'].initialize(
-                'c2d7324bd5a84684a7ebb14a985a4aa1'
-            );
+        window.addEventListener("load", function() {
+            console.log('Checking Iterable SDK:', window['@iterable/web-sdk']);
+            
+            if (window['@iterable/web-sdk']) {
+                try {
+                    const { initialize, getInAppMessages } = window['@iterable/web-sdk'];
+                    
+                    if (initialize) {
+                        const { setEmail, logout } = initialize('c2d7324bd5a84684a7ebb14a985a4aa1');
+                        
+                        if (setEmail) {
+                            setEmail('user@example.com') // Replace dynamically
+                                .then(() => {
+                                    console.log('Email set successfully.');
+                                })
+                                .catch((error) => {
+                                    console.error('Error setting email:', error);
+                                });
+                        } else {
+                            console.error('Iterable SDK did not initialize correctly. setEmail is undefined.');
+                        }
 
-            const { request, pauseMessageStream, resumeMessageStream } = window['@iterable/web-sdk'].getInAppMessages(
-                {
-                    count: 20,
-                    packageName: 'tesla-website',
-                    handleLinks: 'open-all-same-tab',
-                },
-                true
-            );
-
-            setEmail('user@example.com') // Replace with the actual user email dynamically
-                .then(() => {
-                    request();
-                })
-                .catch(() => { });
-        })();
+                        if (getInAppMessages) {
+                            const { request, pauseMessageStream, resumeMessageStream } = getInAppMessages(
+                                {
+                                    count: 20,
+                                    packageName: 'tesla-website',
+                                    handleLinks: 'open-all-same-tab',
+                                },
+                                true
+                            );
+                            request();
+                        } else {
+                            console.error('getInAppMessages is undefined.');
+                        }
+                    } else {
+                        console.error('initialize function is undefined in Iterable SDK.');
+                    }
+                } catch (error) {
+                    console.error('Error initializing Iterable SDK:', error);
+                }
+            } else {
+                console.error('Iterable SDK is not available. Check if the script loaded correctly.');
+            }
+        });
     </script>
 </body>
 
